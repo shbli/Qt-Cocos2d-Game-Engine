@@ -1,0 +1,93 @@
+/*
+  this have to be copied to your main.cpp files, please just change the text main_menu to your first class, you'll find it twice here
+
+
+**
+
+#include <QtGui/QApplication>
+#include <QDir>
+//here's the first one to change
+#include "main_menu.h"
+#include "game_engine.h"
+
+
+int main(int argc, char *argv[])
+{
+    QApplication::setGraphicsSystem("raster");
+    QApplication app(argc, argv);
+    //this code, until the last QDir is to set the CWD, aka Current Working Directory    
+    QDir dir(QCoreApplication::applicationDirPath());
+    if (dir.dirName().toLower() == "bin")
+    {
+        dir.cdUp();
+    }
+#ifdef WIN32
+    if (dir.dirName().toLower() == "debug" || dir.dirName().toLower() == "release")
+    {
+        dir.cdUp();
+    }
+#endif
+    QDir::setCurrent(dir.absolutePath());
+    //set up audio playback
+    audioManager::setUpAudioManager();
+    //here is the second main_menu to change
+    Director::sharedDirector()->startWithScene(main_menu::scene());
+    return app.exec();
+}
+
+**
+
+*/
+
+
+
+/* this can be added to your pro file to include special resource folder to be used in your game/app
+
+  
+
+**
+
+# Uncomment/comment the following line to enable/disable debug prints of
+# Qt GameEnabler audio framework.
+#DEFINES += GE_DEBUG
+
+# If your application uses the Qt Mobility libraries, uncomment
+# the following lines and add the respective components to the 
+# MOBILITY variable. 
+
+QT += core gui opengl
+
+symbian {
+    QT += multimedia
+    CONFIG += mobility
+    MOBILITY = systeminfo
+}
+
+unix:!symbian {
+    CONFIG += mobility
+    MOBILITY = systeminfo
+    !maemo5 {
+        MOBILITY += multimedia
+    }
+}
+win32 {
+    QT += multimedia
+}
+
+#after having these, create a folder resourc and add to it all the images, sounds that you want to use in your game
+
+
+unix:!symbian:!maemo5:!win {
+    #Special case for N950 that works, all other devices will use the else case
+    dir1.files = resourc/*
+    dir1.path  = /opt/
+$${TARGET}
+    INSTALLS += dir1
+} else {
+    dir1.source += resourc/*
+    DEPLOYMENTFOLDERS = dir1
+}
+
+**
+
+*/
